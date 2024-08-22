@@ -1,0 +1,6 @@
+.nav{
+background-color: aqua;
+flex: auto;
+justify-content: space-around;
+justify-items: center;
+}
