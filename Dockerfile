@@ -22,7 +22,7 @@ RUN  npm run build
 
 FROM node:18-alpine
 #./dist can Be Used for the TO Get Secific Directory From the Base Image
-COPY --from=build /App/dsit ./dsit
+COPY --from=build /App 
 
 ENTRYPOINT [ "nodejs" ]
 
