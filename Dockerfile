@@ -1,29 +1,17 @@
-FROM ubuntu as build
+FROM Ubuntu as Build
 
-WORKDIR /src
+COPY package.json ./
 
-COPY package*.json ./
+RUN mkdir /app
 
+WORKDIR /app
 
-RUN apt-get update && \
-    apt-get install -y curl gnupg && \
-    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-    apt-get install -y nodejs && \
-    apt-get install -y build-essential && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* 
+COPY . /app
 
 RUN npm install
 
-COPY . .
-
-
-RUN  npm run build 
-
 FROM node:18-alpine
-#./dist can Be Used for the TO Get Secific Directory From the Base Image
-COPY --from=build /src/dsit ./dsit
 
-ENTRYPOINT [ "node" ]
+COPY --from=Build /app /app
 
-CMD [ "dist/index.js","0.0.0.0:8080" ]
+ENTRYPOINT [ "node", "/app","8200"]
