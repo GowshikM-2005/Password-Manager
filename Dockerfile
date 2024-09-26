@@ -1,4 +1,4 @@
-FROM Ubuntu as Build
+FROM node:18-alpine
 
 COPY package.json ./
 
@@ -8,10 +8,9 @@ WORKDIR /app
 
 COPY . /app
 
-RUN npm install
-
-FROM node:18-alpine
-
-COPY --from=Build /app /app
-
-ENTRYPOINT [ "node", "/app","8200"]
+RUN npm install &&\
+    npm run build 
+    
+ENTRYPOINT ["node"]
+EXPOSE 8200
+CMD ["/app/app.jsx", "0.0.0.0:8200"]
